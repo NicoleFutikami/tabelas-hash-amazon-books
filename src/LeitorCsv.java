@@ -14,7 +14,12 @@ public class LeitorCsv {
 
     private static int totalAvaliacoes = 0; //conta num de avaliacoes ue
     private static int colunasIncorretas = 0; // registross com qntd diferentes q 10 colunas
-    private static int cabecalhoPendente =1; //primeira linha co csv eh ignorada
+    private static int cabecalhoPendente =1;//primeira linha co csv eh ignorada
+
+    private static int avaliacoesValidas =0;
+    private static int semUsuario = 0;
+    private static int semTitulo = 0;
+    private static int notaInvalida = 0;
 
     private static int campoNecessario(int coluna){ //tem 10 colunas mas andrey pediu so 4
         if(coluna == 1) return 0; //titulo
