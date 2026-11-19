@@ -77,6 +77,12 @@ public class LeitorCsv {
             tamanhos[indice] =0; //esvazia pra proximo registro
         }
     }
+    int coluna = 0;
+    int estado = 0; //evita erro com virgula
+    int inicioCampo = 1;
+    int registroIniciado = 0;
+    int pularQuebraLinha = 0;
+
     
 
 
