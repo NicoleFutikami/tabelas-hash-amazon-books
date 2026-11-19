@@ -47,6 +47,15 @@ public class LeitorCsv {
             System.out.print(campos[indiceCampo][indice]); //imprime o campo e o indice, posicao
         }
     }
+    private static void terminarRegistro(int numeroColunas){ //final do registro csv
+        if (cabecalhoPendente == 1){
+            cabecalhoPendente = 0; // nn precisa ignorar novamente
+        }else{
+            totalAvaliacoes++; //terminou de ler cabecalho e vamos fazer os ifs
+
+            
+        }
+    }
 
 
 }
