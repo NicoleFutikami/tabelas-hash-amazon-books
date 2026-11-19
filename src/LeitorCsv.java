@@ -53,8 +53,27 @@ public class LeitorCsv {
         }else{
             totalAvaliacoes++; //terminou de ler cabecalho e vamos fazer os ifs
 
-            
+            if (numeroColunas != 10){ //se colunas incorretas forem diferentes de 10, aumenta a contagem de colunas incorretas
+                colunasIncorretas++;
+            }
+            if (totalAvaliacoes <= 2){ //TESTANDO
+                System.out.print("avaliacao ");
+                System.out.println(totalAvaliacoes);
+
+                System.out.print("titulo");
+                mostrarCampo(0);
+
+                System.out.print("usuario");
+                mostrarCampo(1);
+
+                System.out.println("perfil");
+                mostrarCampo(2);
+
+                System.out.print("nota");
+                mostrarCampo(3);
+            }
         }
+        
     }
 
 
