@@ -80,91 +80,84 @@ public class LeitorCsv {
         }
     }
 
-    public static void lerArquivo(String caminho) throws IOException {
 
+    public static void lerArquivo(String caminho) throws IOException {
         totalAvaliacoes = 0;
         colunasIncorretas = 0;
         cabecalhoPendente = 1;
 
-        for (int indice = 0; indice < 4; indice++) {
-            tamanhos[indice] = 0;
+        for (int i = 0; i < 4; i++) {
+            tamanhos[i] = 0;
         }
 
         int coluna = 0;
-        int estado = 0; //evita erro com virgula
+        int dentroAspas = 0; // 1 quando esta dentro de aspas
+        int aspasFechadas = 0;
         int inicioCampo = 1;
         int registroIniciado = 0;
         int pularQuebraLinha = 0;
 
-        try (BufferedReader leitor = new BufferedReader(
-                new InputStreamReader(
-                        new FileInputStream(caminho), "UTF-8"
-                ), 65536)) {
+        FileReader leitor = new FileReader(caminho);
+        int codigo = leitor.read();
 
-            int codigo = leitor.read();
+        while (codigo != -1) {
+            char caractere = (char) codigo;
 
-            while (codigo != -1) {
-                char caractere = (char) codigo;
-
-                if (pularQuebraLinha == 1 &&
-                        caractere == '\n') {
-                    pularQuebraLinha = 0;
-                    codigo = leitor.read();
-                    continue;
-                }
-
+            if (pularQuebraLinha == 1 && caractere == '\n') {
+                pularQuebraLinha = 0;
+            } else {
                 pularQuebraLinha = 0;
 
-                if (estado == 1) {
+                if (dentroAspas == 1) {
                     if (caractere == '"') {
-                        estado = 2;
+                        dentroAspas = 0;
+                        aspasFechadas = 1;
                     } else {
                         guardarCaractere(coluna, caractere);
                     }
 
-                } else if (estado == 2 &&
-                        caractere == '"') {
+                } else if (aspasFechadas == 1 && caractere == '"') {
                     guardarCaractere(coluna, '"');
-                    estado = 1;
+                    dentroAspas = 1;
+                    aspasFechadas = 0;
 
                 } else if (caractere == ',') {
                     coluna++;
                     inicioCampo = 1;
-                    estado = 0;
+                    aspasFechadas = 0;
                     registroIniciado = 1;
 
-                } else if (caractere == '\n' ||
-                        caractere == '\r') {
-
+                } else if (caractere == '\n' || caractere == '\r') {
                     if (registroIniciado == 1) {
                         terminarRegistro(coluna + 1);
                     }
 
                     coluna = 0;
                     inicioCampo = 1;
-                    estado = 0;
+                    aspasFechadas = 0;
                     registroIniciado = 0;
 
                     if (caractere == '\r') {
                         pularQuebraLinha = 1;
                     }
 
-                } else if (caractere == '"' &&
-                        inicioCampo == 1) {
-                    estado = 1;
+                } else if (caractere == '"' && inicioCampo == 1) {
+                    dentroAspas = 1;
                     inicioCampo = 0;
                     registroIniciado = 1;
 
                 } else {
                     guardarCaractere(coluna, caractere);
                     inicioCampo = 0;
+                    aspasFechadas = 0;
                     registroIniciado = 1;
-                    estado = 0;
                 }
-
-                codigo = leitor.read();
             }
+
+            codigo = leitor.read();
         }
+
+        leitor.close();
 
         if (registroIniciado == 1) {
             terminarRegistro(coluna + 1);
@@ -173,11 +166,11 @@ public class LeitorCsv {
         System.out.print("Avaliacoes lidas: ");
         System.out.println(totalAvaliacoes);
 
-        System.out.print(
-                "Registros com numero incorreto de colunas: "
-        );
+        System.out.print("Registros com numero incorreto de colunas: ");
         System.out.println(colunasIncorretas);
     }
+
+
 
 }
 
