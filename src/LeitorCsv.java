@@ -102,7 +102,14 @@ public class LeitorCsv {
 
             if (numeroColunas != 10){ //se colunas incorretas forem diferentes de 10, aumenta a contagem de colunas incorretas
                 colunasIncorretas++;
+            }else if(campoVazio(1) == 1){
+                semUsuario ++;
+            }else if(campoVazio(0) == 1){
+                semTitulo++;
+            }else if(campoVazio(2) == 1){
+
             }
+
             if (totalAvaliacoes <= 2){ //TESTANDO
                 System.out.print("avaliacao ");
                 System.out.println(totalAvaliacoes);
@@ -217,9 +224,10 @@ public class LeitorCsv {
 
         System.out.print("Registros com numero incorreto de colunas: ");
         System.out.println(colunasIncorretas);
+
     }
 
-// HABILITAR O CODIGO HARUMIIIIIIIIII
+// HABILITAR O CODIGO HARUMIIIIIIIIII oiii
 
 }
 
