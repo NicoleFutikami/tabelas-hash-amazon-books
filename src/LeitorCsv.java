@@ -73,8 +73,11 @@ public class LeitorCsv {
                 mostrarCampo(3);
             }
         }
-        
+        for (int indice =0; indice<4; indice++){
+            tamanhos[indice] =0; //esvazia pra proximo registro
+        }
     }
+    
 
 
 }
