@@ -11,4 +11,8 @@ public class LeitorCsv {
         new char[64], //perfil
         new char[64]    //nota
     };
+    private static int[] tamanhos = new int[4];//vetor com os 4 campos ali de cima
+    private static int[] capacidades = {64, 64, 64, 64};// guarda num de caract que cabe
+
+
 }
