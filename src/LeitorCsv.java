@@ -29,8 +29,9 @@ public class LeitorCsv {
         int destino = campoNecessario(coluna);
         if(destino == -1) return; //se a coluna nao for uma das quatro, ignora
 
-        if (tamanhos [destino] == capacidades[destino]){
-            
+        if (tamanhos [destino] == capacidades[destino]){ //ve se ta dentro do numero de carac
+            int novaCapacidade = capacidades[destino] * 2; // dpbra capacidade se tiver maior
+            char [] novoVetor = new char[novaCapacidade];
         }
     }
 }
