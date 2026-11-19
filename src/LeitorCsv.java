@@ -32,6 +32,13 @@ public class LeitorCsv {
         if (tamanhos [destino] == capacidades[destino]){ //ve se ta dentro do numero de carac
             int novaCapacidade = capacidades[destino] * 2; // dpbra capacidade se tiver maior
             char [] novoVetor = new char[novaCapacidade];
+
+            for( int indice =0; indice < tamanhos [destino]; indice++){ //percorre pra atualizar
+                novoVetor[indice] = campos [destino][indice];
+            }
+            campos [destino] = novoVetor;
+            capacidades[destino] = novaCapacidade; //atualiza em si
         }
+        
     }
 }
