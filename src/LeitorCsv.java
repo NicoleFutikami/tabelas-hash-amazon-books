@@ -39,6 +39,14 @@ public class LeitorCsv {
             campos [destino] = novoVetor;
             capacidades[destino] = novaCapacidade; //atualiza em si
         }
-        
+        campos[destino][tamanhos[destino]] = caractere; //guarda caractere na proxima posicao livre do vetor
+        tamanhos[destino]++; //aumenta 1 pro vetor nao comer caractere
     }
+    private static void mostrarCampo(int indiceCampo){ //indica qual campo vamos mostrar
+        for(int indice = 0; indice < tamanhos[indiceCampo]; indice++){ //percorre os armazenados
+            System.out.print(campos[indiceCampo][indice]); //imprime o campo e o indice, posicao
+        }
+    }
+
+
 }
