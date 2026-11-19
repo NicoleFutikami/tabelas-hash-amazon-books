@@ -15,7 +15,7 @@ public class LeitorCsv {
     private static int[] capacidades = {64, 64, 64, 64};// guarda num de caract que cabe
 
     private static int totalAvaliacoes = 0; //conta num de avaliacoes ue
-    private static int colunasIncorreras = 0; // registross com qntd diferentes q 10 colunas
+    private static int colunasIncorretas = 0; // registross com qntd diferentes q 10 colunas
     private static int cabecalhoPendente =1; //primeira linha co csv eh ignorada
 
     private static int campoNecessario(int coluna){ //tem 10 colunas mas andrey pediu so 4
@@ -27,5 +27,10 @@ public class LeitorCsv {
     }
     private static void guardarCaractere(int coluna, char caractere){ //guarda carac lido no csv
         int destino = campoNecessario(coluna);
+        if(destino == -1) return; //se a coluna nao for uma das quatro, ignora
+
+        if (tamanhos [destino] == capacidades[destino]){
+            
+        }
     }
 }
