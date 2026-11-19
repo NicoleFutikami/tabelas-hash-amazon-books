@@ -1,6 +1,13 @@
+import java.io.IOException;
+
 public class Principal {
-    public static void main(String[] args){
-        System.out.println("Sistemas de tabelas Hash- Amazon Books");
-        System.out.println("Programa iniciado com sucesso");
+
+    public static void main(String[] argumentos)
+            throws IOException {
+
+        LeitorCsv.lerArquivo(
+                "/Users/mimi/Desktop/JAVARA3/Books_rating.csv"
+        );
+
     }
 }

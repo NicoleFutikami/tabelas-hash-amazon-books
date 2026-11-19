@@ -179,9 +179,6 @@ public class LeitorCsv {
         System.out.println(colunasIncorretas);
     }
 
-    public static void main(String[] args) throws IOException {
-        lerArquivo("/Users/mimi/Desktop/JAVARA3/Books_rating.csv");
-    }
 }
 
 
