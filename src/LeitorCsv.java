@@ -18,5 +18,11 @@ public class LeitorCsv {
     private static int colunasIncorreras = 0; // registross com qntd diferentes q 10 colunas
     private static int cabecalhoPendente =1; //primeira linha co csv eh ignorada
 
-
+    private static int campoNecessario(int coluna){ //tem 10 colunas mas andrey pediu so 4
+        if(coluna == 1) return 0; //titulo
+        if(coluna == 3) return 1; //usuario
+        if(coluna == 4) return 2; //perfil
+        if(coluna == 6) return 3; //nota
+        return -1; //coluna NAO EH uma das 4 (eh uma das outras 6)
+    }
 }
