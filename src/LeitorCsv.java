@@ -60,6 +60,40 @@ public class LeitorCsv {
         }
         return 1;
     }
+    private static double converterNota(char[] caracteres, int tamanho){
+        if(tamanho == 0) return -1;
+
+        int parteInteira = 0;
+        double nota = 0.0;
+        double divisor = 10.0;
+        int temPonto = 0;
+
+        for(int i = 0; i < tamanho; i++){
+            char c = caracteres[i];
+
+            if (c == '.'){
+                if(temPonto == 1 || i == 0 || i == tamanho -1) return -1.0;
+                temPonto =1;
+            } else if (c >= '0' && c <= '9'){
+                int digito = c -'0';
+
+                if(temPonto == 0){
+                    parteInteira = parteInteira * 10 + digito;
+                    nota = parteInteira;
+                }else{
+                    if(parteInteira == 5 && digito !=0) return -1.0;
+
+                    nota = nota + digito / divisor;
+                    divisor = divisor * 10;
+                }
+                if (parteInteira > 5 ) return -1.0;
+            } else{
+                return -1.0;
+            }
+        }
+        if (parteInteira < 1) return -1.0;
+        return nota;
+    }
     private static void terminarRegistro(int numeroColunas){ //final do registro csv
         if (cabecalhoPendente == 1){
             cabecalhoPendente = 0; // nn precisa ignorar novamente
