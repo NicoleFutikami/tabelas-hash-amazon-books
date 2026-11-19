@@ -50,6 +50,16 @@ public class LeitorCsv {
             System.out.print(campos[indiceCampo][indice]); //imprime o campo e o indice, posicao
         }
     }
+
+    private static int campoVazio(int indiceCampo){ //METODO PRA VER SE TEM CAMPO VAZIO
+        for (int indice = 0; indice <tamanhos[indiceCampo]; indice ++){
+            char caractere = campos[indiceCampo][indice];
+            if (caractere != ' ' && caractere != '\t' && caractere != '\n' && caractere != '\r'){
+                return 0;
+            }
+        }
+        return 1;
+    }
     private static void terminarRegistro(int numeroColunas){ //final do registro csv
         if (cabecalhoPendente == 1){
             cabecalhoPendente = 0; // nn precisa ignorar novamente
