@@ -25,4 +25,7 @@ public class LeitorCsv {
         if(coluna == 6) return 3; //nota
         return -1; //coluna NAO EH uma das 4 (eh uma das outras 6)
     }
+    private static void guardarCaractere(int coluna, char caractere){ //guarda carac lido no csv
+        int destino = campoNecessario(coluna);
+    }
 }
