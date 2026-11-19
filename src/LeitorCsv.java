@@ -14,5 +14,9 @@ public class LeitorCsv {
     private static int[] tamanhos = new int[4];//vetor com os 4 campos ali de cima
     private static int[] capacidades = {64, 64, 64, 64};// guarda num de caract que cabe
 
+    private static int totalAvaliacoes = 0; //conta num de avaliacoes ue
+    private static int colunasIncorreras = 0; // registross com qntd diferentes q 10 colunas
+    private static int cabecalhoPendente =1; //primeira linha co csv eh ignorada
+
 
 }
