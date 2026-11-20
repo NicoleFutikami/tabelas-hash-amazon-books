@@ -9,4 +9,17 @@ public class TabelaHash {
     public TabelaHash(int funcaoEscolhida){
         tipoFuncao = funcaoEscolhida;
     }
+
+    private int calcularIndice(char[] chave, int tamanho) {
+        int valorHash;
+
+        if (tipoFuncao == 1) {
+            valorHash = FuncoesHash.hashFnv1a(chave, tamanho);
+        } else if (tipoFuncao == 2) {
+            valorHash = FuncoesHash.hashPolinomial31(chave, tamanho);
+        } else {
+            valorHash = FuncoesHash.hashDjb2(chave, tamanho);
+        }
+        return FuncoesHash.calcularPosicao(valorHash);
+    }
 }
