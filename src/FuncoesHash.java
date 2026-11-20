@@ -26,5 +26,10 @@ public class FuncoesHash {
         }
         return h;
     }
+    public static int calcularPosicao(int valorHash){
+        int posicao = (valorHash & 0x7FFFFFFF) % 1000003; //sao 7 Fs e 5 zeros
+        return posicao;
+    }
+
 
 }
