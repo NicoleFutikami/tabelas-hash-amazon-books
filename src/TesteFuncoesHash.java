@@ -22,6 +22,11 @@ public class TesteFuncoesHash {
 
         System.out.println("pol de a" + FuncoesHash.hashPolinomial31(primeiraChave ,2));
         System.out.println("pol de b " + FuncoesHash.hashPolinomial31(segundaChave , 2));
-        
+
+        char [] chaveLonga = {'A', '1', 'R', 'R', '1', 'W', '4',
+                'Z', 'Y', 'R', 'A', 'X', 'C', 'N'};
+
+        int hashLongo = FuncoesHash.hashPolinomial31(chaveLonga, 14);
+        System.out.println(FuncoesHash.calcularPosicao(hashLongo));
     }
 }
