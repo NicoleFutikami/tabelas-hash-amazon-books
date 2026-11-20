@@ -16,5 +16,7 @@ public class TesteFuncoesHash {
         System.out.println(FuncoesHash.calcularPosicao(fnv1a));
         System.out.println(FuncoesHash.calcularPosicao(polinomial));
         System.out.println(FuncoesHash.calcularPosicao(djb2));
+
+        //indo dormir, falta teste de colisao e negativo 
     }
 }
