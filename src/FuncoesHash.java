@@ -18,5 +18,13 @@ public class FuncoesHash {
         }
         return h;
     }
+    public static int hashDjb2(char[] chave, int tamanho){
+        int h = 5381;
+
+        for (int indice = 0; indice < tamanho; indice ++){
+            h = 33 * h + chave [indice];
+        }
+        return h;
+    }
 
 }
