@@ -12,5 +12,9 @@ public class TesteFuncoesHash {
         System.out.println(fnv1a);
         System.out.println(polinomial);
         System.out.println(djb2);
+
+        System.out.println(FuncoesHash.calcularPosicao(fnv1a));
+        System.out.println(FuncoesHash.calcularPosicao(polinomial));
+        System.out.println(FuncoesHash.calcularPosicao(djb2));
     }
 }
