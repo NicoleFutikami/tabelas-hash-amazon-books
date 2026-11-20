@@ -5,4 +5,8 @@ public class TabelaHash {
     private int tipoFuncao;
     private int quantidadeChaves = 0;
     private int colisoes = 0;
+
+    public TabelaHash(int funcaoEscolhida){
+        tipoFuncao = funcaoEscolhida;
+    }
 }
