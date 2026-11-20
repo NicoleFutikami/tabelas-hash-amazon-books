@@ -106,8 +106,10 @@ public class LeitorCsv {
                 semUsuario ++;
             }else if(campoVazio(0) == 1){
                 semTitulo++;
-            }else if(campoVazio(2) == 1){
-
+            }else if(converterNota(campos[3], tamanhos[3]) <1.0){
+                notaInvalida ++;
+            } else {
+                avaliacoesValidas ++;
             }
 
             if (totalAvaliacoes <= 2){ //TESTANDO
@@ -141,6 +143,11 @@ public class LeitorCsv {
         totalAvaliacoes = 0;
         colunasIncorretas = 0;
         cabecalhoPendente = 1;
+
+        avaliacoesValidas = 0;
+        semUsuario = 0;
+        semTitulo = 0;
+        notaInvalida = 0;
 
         for (int i = 0; i < 4; i++) {
             tamanhos[i] = 0;
@@ -224,6 +231,12 @@ public class LeitorCsv {
 
         System.out.print("Registros com numero incorreto de colunas: ");
         System.out.println(colunasIncorretas);
+
+        System.out.println("avalicoes validas: " + avaliacoesValidas);
+        System.out.println("sem usuario: " + semUsuario);
+        System.out.println("sem titulo " + semTitulo);
+        System.out.println("notas invalidas " + notaInvalida);
+        System.out.println("avaliacoes descartadas: "+ (totalAvaliacoes - avaliacoesValidas));
 
     }
 

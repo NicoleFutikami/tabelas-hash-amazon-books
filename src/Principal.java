@@ -8,6 +8,7 @@ public class Principal {
         LeitorCsv.lerArquivo(
                 "/Users/mimi/Desktop/JAVARA3/Books_rating.csv"
         );
+        System.out.println("terminou o programa"); //ver se ta indp
 
     }
 }
