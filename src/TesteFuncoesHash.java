@@ -17,6 +17,11 @@ public class TesteFuncoesHash {
         System.out.println(FuncoesHash.calcularPosicao(polinomial));
         System.out.println(FuncoesHash.calcularPosicao(djb2));
 
-        //indo dormir, falta teste de colisao e negativo 
+        char[] primeiraChave ={'A', 'a'};
+        char[] segundaChave = {'B','b'};
+
+        System.out.println("pol de a" + FuncoesHash.hashPolinomial31(primeiraChave ,2));
+        System.out.println("pol de b " + FuncoesHash.hashPolinomial31(segundaChave , 2));
+        
     }
 }
