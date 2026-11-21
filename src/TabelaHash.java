@@ -86,6 +86,33 @@ public class TabelaHash {
             atual = atual.proximo;
         }
         return null;
+    }
+    public void registrarNotaLivro(char[] titulo, int tamanho, double nota){
+        int indice = calcularIndice(titulo, tamanho);
+        NoLista atual = listas[indice];
+
+        while(atual != null ){
+            if(chavesIguais(atual.chave, atual.tamanho,titulo, tamanho) == 1){
+
+                atual.somaNotas = atual.somaNotas + nota;
+                atual.quantidadeAvaliacoes ++;
+
+                return;
+            }
+            atual = atual.proximo;
+        }
+        if (listas[indice] != null){
+            colisoes++;
+        }
+        NoLista novo = new NoLista(titulo, tamanho);
+
+        novo.somaNotas = nota;
+        novo.quantidadeAvaliacoes = 1;
+
+        novo.proximo = listas[indice];
+        listas[indice] = novo;
+
+        quantidadeChaves++;
 
     }
 }
