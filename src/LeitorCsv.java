@@ -94,7 +94,7 @@ public class LeitorCsv {
         if (parteInteira < 1) return -1.0;
         return nota;
     }
-    private static void terminarRegistro(int numeroColunas, TabelaLivros tabelaLivros){ //final do registro csv
+    private static void terminarRegistro(int numeroColunas, TabelaLivros tabelaLivros, TabelaUsuarios tabelaUsuarios){ //final do registro csv
         if (cabecalhoPendente == 1){
             cabecalhoPendente = 0; // nn precisa ignorar novamente
         }else{
@@ -115,6 +115,10 @@ public class LeitorCsv {
                     avaliacoesValidas++;
                     // JAVA-06: so guarda notas de registros validos
                     tabelaLivros.adicionarAvaliacao(campos[0], tamanhos[0], nota);
+
+                    if (tabelaUsuarios != null){
+                        tabelaUsuarios.adicionarUsuario(campos [1], tamanhos[1], campos [2], tamanhos[2]);
+                    }
                 }
             }
 
@@ -146,6 +150,9 @@ public class LeitorCsv {
 
 
     public static void lerArquivo(String caminho, TabelaLivros tabelaLivros) throws IOException {
+        lerArquivo(caminho, tabelaLivros, null);}
+
+    public static void lerArquivo(String caminho, TabelaLivros tabelaLivros, TabelaUsuarios tabelaUsuarios)throws IOException{
         totalAvaliacoes = 0;
         colunasIncorretas = 0;
         cabecalhoPendente = 1;
@@ -198,7 +205,7 @@ public class LeitorCsv {
 
                 } else if (caractere == '\n' || caractere == '\r') {
                     if (registroIniciado == 1) {
-                        terminarRegistro(coluna + 1, tabelaLivros);
+                        terminarRegistro(coluna + 1, tabelaLivros, tabelaUsuarios);
                     }
 
                     coluna = 0;
@@ -229,7 +236,7 @@ public class LeitorCsv {
         leitor.close();
 
         if (registroIniciado == 1) {
-            terminarRegistro(coluna + 1, tabelaLivros);
+            terminarRegistro(coluna + 1, tabelaLivros, tabelaUsuarios);
         }
 
         System.out.print("Avaliacoes lidas: ");
