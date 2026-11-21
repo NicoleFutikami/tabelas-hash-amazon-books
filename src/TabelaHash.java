@@ -74,4 +74,18 @@ public class TabelaHash {
     public int obterColisoes(){
         return colisoes;
     }
+
+    public NoLista encontrarNo(char [] chave, int tamanho){
+        int indice = calcularIndice(chave, tamanho);
+        NoLista atual = listas[indice];
+
+        while(atual != null){
+            if(chavesIguais(atual.chave, atual.tamanho, chave, tamanho) == 1){
+                return atual;
+            }
+            atual = atual.proximo;
+        }
+        return null;
+
+    }
 }
