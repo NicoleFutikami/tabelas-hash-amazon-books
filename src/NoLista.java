@@ -3,6 +3,9 @@ public class NoLista {
     int tamanho;
     NoLista proximo;
 
+    double somaNotas;
+    int quantidadeAvaliacoes;
+
     public NoLista(char[] chaveRecebida, int tamanhoRecebido){
         tamanho = tamanhoRecebido;
         chave = new char[tamanho];
@@ -11,5 +14,8 @@ public class NoLista {
             chave[indice] = chaveRecebida[indice];
         }
         proximo = null;
+
+        somaNotas = 0.0;
+        quantidadeAvaliacoes = 0;
     }
 }
