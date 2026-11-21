@@ -6,6 +6,12 @@ public class NoLista {
     double somaNotas;
     int quantidadeAvaliacoes;
 
+    char[] nomePerfil;
+    int tamanhoPerfil;
+
+    char[]melhorLivro;
+    int tamanhoMelhorLivro;
+
     public NoLista(char[] chaveRecebida, int tamanhoRecebido){
         tamanho = tamanhoRecebido;
         chave = new char[tamanho];
@@ -17,5 +23,11 @@ public class NoLista {
 
         somaNotas = 0.0;
         quantidadeAvaliacoes = 0;
+
+        nomePerfil = null;
+        tamanhoPerfil = 0;
+
+        melhorLivro = null;
+        tamanhoMelhorLivro = 0;
     }
 }
