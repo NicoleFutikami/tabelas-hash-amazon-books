@@ -25,4 +25,7 @@ public class TabelaLivros {
         System.out.println("quantidade de avaliacoes: " + livro.quantidadeAvaliacoes);
         System.out.println("media global: " + (livro.somaNotas / livro.quantidadeAvaliacoes));
     }
+    public NoLista encontrarLivro(char[] titulo, int tamanho){
+        return tabela.encontrarNo(titulo, tamanho);
+    }
 }

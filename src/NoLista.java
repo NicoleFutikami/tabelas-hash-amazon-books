@@ -32,6 +32,6 @@ public class NoLista {
         melhorLivro = null;
         tamanhoMelhorLivro = 0;
 
-        primeiraAvaliacao = null; 
+        primeiraAvaliacao = null;
     }
 }
