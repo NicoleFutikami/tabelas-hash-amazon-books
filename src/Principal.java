@@ -6,14 +6,17 @@ public class Principal {
             throws IOException {
 
         TabelaLivros livros = new TabelaLivros();
+        TabelaUsuarios usuarios = new TabelaUsuarios();
 
         LeitorCsv.lerArquivo(
                 "/Users/mimi/Desktop/JAVARA3/Books_rating.csv",
-                livros
+                livros, usuarios
         );
 
         System.out.println("itulos diferentes: "
                 + livros.obterQuantidadeLivros());
+
+        System.out.println("usuarios dif" + usuarios.obterQuantidadeUsuarios());
 
         System.out.println("terminou o programa");
     }
