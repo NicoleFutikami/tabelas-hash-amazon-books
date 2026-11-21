@@ -56,6 +56,18 @@ public class TabelaUsuarios {
             return;
         }
         NoAvaliacao atual = usuario.primeiraAvaliacao;
+
+        while(atual != null){
+            if(atual.livro == livro){
+                if(nota > atual.maiorNota){
+                    atual.maiorNota = nota;
+                }
+                return;
+            }
+            atual = atual.proximo;
+        }
+        
+
     }
 
 }
