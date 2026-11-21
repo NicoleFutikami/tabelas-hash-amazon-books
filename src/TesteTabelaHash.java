@@ -22,7 +22,7 @@ public class TesteTabelaHash {
         TabelaHash tabelaColisao = new TabelaHash(2);
 
         char[] aa = {'A', 'a'};
-        char[] bb = {'B', 'b'};
+        char[] bb = {'B', 'B'};
         char[] ax = {'A', 'x'};
 
         System.out.println("posicao Aa: " + FuncoesHash.calcularPosicao(FuncoesHash.hashPolinomial31(aa,2)));
@@ -34,6 +34,16 @@ public class TesteTabelaHash {
         System.out.println("buscar ax" + tabelaColisao.buscar(ax, 2));
         System.out.println("total apos colisao: "+ tabelaColisao.obterQuantidadeChaves());
 
-        
+        char[] reutilizada = {'X', 'Y'};
+        char[] original = {'X', 'Y'};
+
+        TabelaHash tabelaCopia = new TabelaHash(1);
+
+        tabelaCopia.inserir(reutilizada, 2);
+
+        reutilizada[0] = 'Z';
+
+        System.out.println("Copia preservada: "
+                + tabelaCopia.buscar(original, 2));
     }
 }
