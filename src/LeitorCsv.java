@@ -94,7 +94,7 @@ public class LeitorCsv {
         if (parteInteira < 1) return -1.0;
         return nota;
     }
-    private static void terminarRegistro(int numeroColunas){ //final do registro csv
+    private static void terminarRegistro(int numeroColunas, TabelaLivros tabelaLivros){ //final do registro csv
         if (cabecalhoPendente == 1){
             cabecalhoPendente = 0; // nn precisa ignorar novamente
         }else{
@@ -106,10 +106,16 @@ public class LeitorCsv {
                 semUsuario ++;
             }else if(campoVazio(0) == 1){
                 semTitulo++;
-            }else if(converterNota(campos[3], tamanhos[3]) <1.0){
-                notaInvalida ++;
             } else {
-                avaliacoesValidas ++;
+                double nota = converterNota(campos[3], tamanhos[3]);
+
+                if (nota < 1.0) {
+                    notaInvalida++;
+                } else {
+                    avaliacoesValidas++;
+                    // JAVA-06: so guarda notas de registros validos
+                    tabelaLivros.adicionarAvaliacao(campos[0], tamanhos[0], nota);
+                }
             }
 
             if (totalAvaliacoes <= 2){ //TESTANDO
@@ -139,7 +145,7 @@ public class LeitorCsv {
     }
 
 
-    public static void lerArquivo(String caminho) throws IOException {
+    public static void lerArquivo(String caminho, TabelaLivros tabelaLivros) throws IOException {
         totalAvaliacoes = 0;
         colunasIncorretas = 0;
         cabecalhoPendente = 1;
@@ -192,7 +198,7 @@ public class LeitorCsv {
 
                 } else if (caractere == '\n' || caractere == '\r') {
                     if (registroIniciado == 1) {
-                        terminarRegistro(coluna + 1);
+                        terminarRegistro(coluna + 1, tabelaLivros);
                     }
 
                     coluna = 0;
@@ -223,7 +229,7 @@ public class LeitorCsv {
         leitor.close();
 
         if (registroIniciado == 1) {
-            terminarRegistro(coluna + 1);
+            terminarRegistro(coluna + 1, tabelaLivros);
         }
 
         System.out.print("Avaliacoes lidas: ");
