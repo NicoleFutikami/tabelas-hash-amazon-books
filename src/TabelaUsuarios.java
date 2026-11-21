@@ -27,4 +27,8 @@ public class TabelaUsuarios {
             usuario.tamanhoPerfil = tamanhoPerfil;
         }
     }
+    public int obterQuantidadeUsuarios(){
+        return tabela.obterQuantidadeChaves();
+    }
+
 }
