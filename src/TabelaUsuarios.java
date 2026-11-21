@@ -49,5 +49,13 @@ public class TabelaUsuarios {
         }
         System.out.println();
     }
+    public void registrarLivroAvaliado(char[] identificador, int tamanhoIdentificador, NoLista livro, double nota){
+        NoLista usuario = tabela.encontrarNo(identificador, tamanhoIdentificador);
+
+        if(usuario == null || livro == null){
+            return;
+        }
+        NoAvaliacao atual = usuario.primeiraAvaliacao;
+    }
 
 }
