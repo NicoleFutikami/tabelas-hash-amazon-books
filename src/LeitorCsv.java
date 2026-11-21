@@ -113,11 +113,15 @@ public class LeitorCsv {
                     notaInvalida++;
                 } else {
                     avaliacoesValidas++;
-                    // JAVA-06: so guarda notas de registros validos
+
                     tabelaLivros.adicionarAvaliacao(campos[0], tamanhos[0], nota);
 
                     if (tabelaUsuarios != null){
                         tabelaUsuarios.adicionarUsuario(campos [1], tamanhos[1], campos [2], tamanhos[2]);
+
+                        NoLista livro = tabelaLivros.encontrarLivro(campos[0], tamanhos[0]);
+
+                        tabelaUsuarios.registrarLivroAvaliado(campos[1], tamanhos[1], livro , nota);
                     }
                 }
             }
