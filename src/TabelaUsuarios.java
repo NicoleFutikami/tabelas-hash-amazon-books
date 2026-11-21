@@ -30,5 +30,24 @@ public class TabelaUsuarios {
     public int obterQuantidadeUsuarios(){
         return tabela.obterQuantidadeChaves();
     }
+    public void mostrarUsuario(char[] identificador, int tamanho){
+        NoLista usuario = tabela.encontrarNo(identificador, tamanho);
+
+        if (usuario == null){
+            System.out.println("Usuario nao encontrado");
+            return;
+        }
+        System.out.println("user id: ");
+        for (int indice = 0; indice < usuario.tamanho; indice++){
+            System.out.print(usuario.chave[indice]);
+        }
+        System.out.println();
+        System.out.print("nome do perfil ");
+
+        for(int indice = 0; indice < usuario.tamanhoPerfil; indice++){
+            System.out.print(usuario.nomePerfil[indice]);
+        }
+        System.out.println();
+    }
 
 }
