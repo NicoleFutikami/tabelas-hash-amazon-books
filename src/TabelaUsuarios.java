@@ -17,5 +17,14 @@ public class TabelaUsuarios {
         tabela.inserir(identificador, tamanhoIdentificador);
 
         NoLista usuario = tabela.encontrarNo(identificador, tamanhoIdentificador);
+
+        if (usuario.tamanhoPerfil == 0 && perfilComConteudo(perfil, tamanhoPerfil) == 1){
+            usuario.nomePerfil = new char[tamanhoPerfil];
+
+            for(int indice = 0; indice< tamanhoPerfil; indice ++){
+                usuario.nomePerfil[indice] = perfil[indice];
+            }
+            usuario.tamanhoPerfil = tamanhoPerfil;
+        }
     }
 }
