@@ -33,6 +33,28 @@ public class TabelaHash {
         }
         return 1;
     }
-    
+    public int inserir(char[] chave, int tamanho){
+        int indice = calcularIndice(chave, tamanho);
+
+        NoLista atual = listas[indice];
+
+        while(atual != null){
+            if(chavesIguais(atual.chave, atual.tamanho, chave, tamanho) ==1 ){
+                return 0;
+            }
+            atual = atual.proximo;
+        }
+        if(listas[indice] != null){
+            colisoes++;
+        }
+        NoLista novoNo = new NoLista(chave, tamanho);
+
+        novoNo.proximo = listas[indice];
+        listas[indice] = novoNo;
+
+        quantidadeChaves ++;
+
+        return 1;
+    }
     
 }
