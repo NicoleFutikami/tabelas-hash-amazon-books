@@ -21,23 +21,18 @@ public class TabelaHash {
             valorHash = FuncoesHash.hashDjb2(chave, tamanho);
         }
         return FuncoesHash.calcularPosicao(valorHash);
-
-        
     }
-
-    private int chavesIguais(char[] primeira, int tamanhoPrimeira,
-                            char[] segunda, int tamanhoSegunda) {
-
+    private int chavesIguais(char[] primeira, int tamanhoPrimeira,char[] segunda, int tamanhoSegunda) {
         if (tamanhoPrimeira != tamanhoSegunda) {
             return 0;
         }
-
         for (int indice = 0; indice < tamanhoPrimeira; indice++) {
             if (primeira[indice] != segunda[indice]) {
                 return 0;
             }
         }
-
         return 1;
     }
+    
+    
 }
