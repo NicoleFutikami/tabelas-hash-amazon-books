@@ -12,4 +12,10 @@ public class TabelaUsuarios {
         }
         return 0;
     }
+
+    public void adicionarUsuario(char[] identificador, int tamanhoIdentificador, char[] perfil, int tamanhoPerfil){
+        tabela.inserir(identificador, tamanhoIdentificador);
+
+        NoLista usuario = tabela.encontrarNo(identificador, tamanhoIdentificador);
+    }
 }
