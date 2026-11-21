@@ -66,7 +66,10 @@ public class TabelaUsuarios {
             }
             atual = atual.proximo;
         }
-        
+        NoAvaliacao nova = new NoAvaliacao(livro, nota);
+
+        nova.proximo = usuario.primeiraAvaliacao;
+        usuario.primeiraAvaliacao = nova;
 
     }
 
