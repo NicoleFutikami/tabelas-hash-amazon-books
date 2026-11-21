@@ -56,5 +56,22 @@ public class TabelaHash {
 
         return 1;
     }
-    //
+    public int buscar(char[] chave, int tamanho){
+        int indice = calcularIndice(chave, tamanho);
+        NoLista atual = listas[indice];
+
+        while (atual != null){
+            if(chavesIguais(atual.chave, atual.tamanho, chave, tamanho) ==1 ){
+                return 1;
+            }
+            atual = atual.proximo;
+        }
+        return 0;
+    }
+    public int obterQuantidadeChaves() {
+        return quantidadeChaves;
+    }
+    public int obterColisoes(){
+        return colisoes;
+    }
 }
