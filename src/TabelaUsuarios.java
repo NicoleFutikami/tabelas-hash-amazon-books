@@ -72,5 +72,30 @@ public class TabelaUsuarios {
         usuario.primeiraAvaliacao = nova;
 
     }
+    public void mostrarLivrosAvalidados(char[] identificador, int tamanho){
+        NoLista usuario = tabela.encontrarNo(identificador, tamanho);
+
+        if(usuario == null){
+            System.out.println("usuario nao encontrado");
+            return;
+        }
+        System.out.print("livros de ");
+        for(int indice = 0; indice < usuario.tamanho; indice ++){
+            System.out.print(usuario.chave[indice]);
+        }
+        System.out.println(":");
+
+        NoAvaliacao atual = usuario.primeiraAvaliacao;
+
+        while (atual != null){
+            System.out.print("titulo");
+            for(int indice = 0; indice < atual.livro.tamanho; indice ++){
+                System.out.print(atual.livro.chave[indice]);
+            }
+            System.out.println("maior nota do usuario" + atual.maiorNota);
+
+            atual = atual.proximo;
+        }
+    }
 
 }
