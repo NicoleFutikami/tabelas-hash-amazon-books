@@ -12,6 +12,8 @@ public class NoLista {
     char[]melhorLivro;
     int tamanhoMelhorLivro;
 
+    NoAvaliacao primeiraAvaliacao;
+
     public NoLista(char[] chaveRecebida, int tamanhoRecebido){
         tamanho = tamanhoRecebido;
         chave = new char[tamanho];
@@ -29,5 +31,7 @@ public class NoLista {
 
         melhorLivro = null;
         tamanhoMelhorLivro = 0;
+
+        primeiraAvaliacao = null; 
     }
 }
