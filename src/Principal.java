@@ -21,6 +21,18 @@ public class Principal {
 
         int linhasGravadas = usuarios.gerarArquivoCsv("usuario_melhor_livro.csv");
 
+        OrdenacaoUsuarios ordenacao = new OrdenacaoUsuarios();
+        ordenacao.carregarUsuarios(usuarios);
+
+        double inicioOrdenacao = System.nanoTime();
+        ordenacao.ordenar();
+        double fimOrdenacao = System.nanoTime();
+        double tempoOrdenacao = (fimOrdenacao - inicioOrdenacao) / 1000000.0;
+
+        int linhasOrdenadas= ordenacao.gerarArquivoOrdenado("usuario_melhor_livro.csv");
+        System.out.println("usuarios csv ord" + linhasOrdenadas);
+        System.out.println("tempo ms" + tempoOrdenacao);
+
         int totalConsultas = ConsultaUsuarios.consultarArquivo("user_id.txt", usuarios);
 
         System.out.println("consultas realizadas: "+ totalConsultas);
