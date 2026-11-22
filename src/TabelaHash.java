@@ -123,4 +123,18 @@ public class TabelaHash {
     public NoLista obterInicioLista(int indice){
         return listas[indice];
     }
+    private void escreverCampoCsv(PrintWriter arquivo, char[] texto, int tamanho){
+        arquivo.print('"');
+
+        if(texto != null){
+            for(int indice = 0; indice < tamanho; indice ++){
+                if(texto[indice] == '"'){
+                    arquivo.print('"');
+                }
+                arquivo.print(texto[indice]);
+            }
+        }
+        arquivo.print('"');
+
+    }
 }
