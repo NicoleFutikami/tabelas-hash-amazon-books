@@ -1,3 +1,7 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 public class TabelaUsuarios {
 
     private TabelaHash tabela = new TabelaHash(1);
@@ -174,5 +178,56 @@ public class TabelaUsuarios {
             }
         }
     }
+    private void escreverCampoCsv(PrintWriter arquivo,char[] texto, int tamanho) {
+        arquivo.print('"');
+        if (texto != null) {
+            for (int indice = 0; indice < tamanho; indice++) {
+                if (texto[indice] == '"') {
+                    arquivo.print('"');
+                }
+                arquivo.print(texto[indice]);
+            }
+        }
+        arquivo.print('"');
+    }
+    public int gerarArquivoCsv(String caminho) throws IOException{
+        PrintWriter arquivo = new PrintWriter(new FileWriter(caminho));
 
+        int quantidadeLinhas = 0;
+
+        arquivo.println("User_id, profileName, Title, media_livro, N_livro, nota_usuario");
+
+        for(int indice = 0; indice < tabela.obterCapacidade(); indice++){
+            NoLista usuario = tabela.obterInicioLista(indice);
+
+            while(usuario != null){
+                if(usuario.melhorAvaliacao == null){
+                    arquivo.close();
+                    return -1;
+                }
+                NoAvaliacao avaliacao = usuario.melhorAvaliacao;
+                NoLista livro = avaliacao.livro;
+
+                escreverCampoCsv(arquivo, usuario.chave,usuario.tamanho);
+                arquivo.print(',');
+                escreverCampoCsv(arquivo, usuario.nomePerfil, usuario.tamanhoPerfil);
+                arquivo.print(',');
+                escreverCampoCsv(arquivo, livro.chave, livro.tamanho);
+                arquivo.print(',');
+                double media = livro.somaNotas / livro.quantidadeAvaliacoes;
+                arquivo.print(media);
+                arquivo.println(',');
+
+                arquivo.print(livro.quantidadeAvaliacoes);
+                arquivo.print(',');
+
+                arquivo.print(avaliacao.maiorNota);
+                quantidadeLinhas++;
+
+                usuario = usuario.proximo;
+            }
+        }
+        arquivo.close();
+        return quantidadeLinhas;
+    }
 }

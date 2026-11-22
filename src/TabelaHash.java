@@ -119,5 +119,5 @@ public class TabelaHash {
     public NoLista obterInicioLista(int indice){
         return listas[indice];
     }
-    
+
 }

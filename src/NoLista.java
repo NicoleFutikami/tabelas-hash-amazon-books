@@ -37,4 +37,7 @@ public class NoLista {
         primeiraAvaliacao = null;
         melhorAvaliacao = null;
     }
+
+
+
 }
