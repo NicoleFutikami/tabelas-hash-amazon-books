@@ -230,4 +230,11 @@ public class TabelaUsuarios {
         arquivo.close();
         return quantidadeLinhas;
     }
+    public int obterCapacidade(){
+        return tabela.obterCapacidade();
+    }
+
+    public NoLista obterInicioLista(int indice){
+        return tabela.obterInicioLista(indice);
+    }
 }
