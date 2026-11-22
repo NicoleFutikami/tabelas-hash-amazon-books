@@ -14,6 +14,10 @@ public class Principal {
         );
         usuarios.calcularMelhoresLivros();
 
+        int linhasGravadas = usuarios.gerarArquivoCsv("usuario_melhor_livro.csv");
+
+        System.out.println("usuarios gravados no csv" + linhasGravadas);
+
         System.out.println("titulos diferentes: "
                 + livros.obterQuantidadeLivros());
 
