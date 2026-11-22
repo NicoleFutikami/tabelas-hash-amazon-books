@@ -1,74 +1,74 @@
+
 import java.io.IOException;
+
 public class Principal {
 
-    public static void main(String[] argumentos)
-            throws IOException {
-
+    public static void main(String[] argumentos) throws IOException {
         TabelaLivros livros = new TabelaLivros();
         TabelaUsuarios usuarios = new TabelaUsuarios();
-
-        
-        LeitorCsv.lerArquivo(
-                "/Users/mimi/Desktop/JAVARA3/Books_rating.csv",
-                livros,
-                usuarios
-        );
+        double inicio;
 
 
+        inicio = System.nanoTime();
+        LeitorCsv.lerArquivo("Books_rating.csv", livros, usuarios);
+        System.out.println("Leitura e indexacao (ms): " +
+                (System.nanoTime() - inicio) / 1000000.0);
+
+
+        inicio = System.nanoTime();
         usuarios.calcularMelhoresLivros();
+        System.out.println("Calculo dos melhores livros (ms): " +
+                (System.nanoTime() - inicio) / 1000000.0);
 
 
         RankingLivros ranking = new RankingLivros();
-
+        inicio = System.nanoTime();
         ranking.gerarRanking(livros);
+        System.out.println("Ranking (ms): " +
+                (System.nanoTime() - inicio) / 1000000.0);
         ranking.mostrarRanking();
-        int linhasGravadas = usuarios.gerarArquivoCsv(
-                "usuario_melhor_livro.csv"
-        );
+
+
+        inicio = System.nanoTime();
+        int linhas = usuarios.gerarArquivoCsv("usuario_melhor_livro.csv");
+        System.out.println("Gravacao do CSV (ms): " +
+                (System.nanoTime() - inicio) / 1000000.0);
+
 
         OrdenacaoUsuarios ordenacao = new OrdenacaoUsuarios();
-
+        inicio = System.nanoTime();
         ordenacao.carregarUsuarios(usuarios);
+        System.out.println("Preparacao da lista (ms): " +
+                (System.nanoTime() - inicio) / 1000000.0);
 
-        double inicioOrdenacao = System.nanoTime();
-
+        inicio = System.nanoTime();
         ordenacao.ordenar();
+        System.out.println("Ordenacao (ms): " +
+                (System.nanoTime() - inicio) / 1000000.0);
 
-        double fimOrdenacao = System.nanoTime();
 
-        double tempoOrdenacao =
-                (fimOrdenacao - inicioOrdenacao) / 1000000.0;
-
+        inicio = System.nanoTime();
         int linhasOrdenadas = ordenacao.gerarArquivoOrdenado(
-                "usuario_melhor_livro_ordenado.csv"
-        );
+                "usuario_melhor_livro_ordenado.csv");
+        System.out.println("Gravacao do CSV ordenado (ms): " +
+                (System.nanoTime() - inicio) / 1000000.0);
 
-        System.out.println("Usuarios no CSV ordenado: "
-                + linhasOrdenadas);
 
-        System.out.println("Tempo de ordenacao (ms): "
-                + tempoOrdenacao);
+        inicio = System.nanoTime();
+        int consultas = ConsultaUsuarios.consultarArquivo("user_id.txt", usuarios);
+        System.out.println("Consultas (ms): " +
+                (System.nanoTime() - inicio) / 1000000.0);
 
-        int totalConsultas = ConsultaUsuarios.consultarArquivo(
-                "user_id.txt", usuarios
-        );
+        System.out.println("\n=== RESUMO ===");
+        System.out.println("Livros diferentes: " + livros.obterQuantidadeLivros());
+        System.out.println("Usuarios diferentes: " + usuarios.obterQuantidadeUsuarios());
+        System.out.println("Linhas no CSV: " + linhas);
+        System.out.println("Linhas no CSV ordenado: " + linhasOrdenadas);
+        System.out.println("Consultas realizadas: " + consultas);
 
-        System.out.println("Consultas realizadas: "
-                + totalConsultas);
-
-        System.out.println("Usuarios gravados no CSV: "
-                + linhasGravadas);
-
-        System.out.println("Titulos diferentes: "
-                + livros.obterQuantidadeLivros());
-
-        System.out.println("Usuarios diferentes: "
-                + usuarios.obterQuantidadeUsuarios());
 
         ExperimentosHash.executar(livros, usuarios);
-
-        System.out.println("Terminou o programa!");
+        System.out.println("\nPrograma finalizado!");
     }
 }
-
 

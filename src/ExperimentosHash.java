@@ -1,71 +1,114 @@
 public class ExperimentosHash {
 
-    private static void mostrarFuncao(int tipo){
-        if(tipo == 1){
-            System.out.println("funcao fnv1a");
-        } else if(tipo == 2){
-            System.out.println("funcao polinomial 31");
-        }else{
-            System.out.println("funcao djb2");
+    // Busca as chaves na tabela original de usuarios ou livros.
+    private static NoLista obterInicio(int conjunto, int indice,
+                                       TabelaLivros livros, TabelaUsuarios usuarios) {
+        if (conjunto == 1) {
+            return usuarios.obterInicioLista(indice);
         }
+        return livros.obterInicioLista(indice);
     }
-    private static void testarUsuarios(TabelaUsuarios usuarios, int tipo){
-        TabelaHash teste = new TabelaHash(tipo);
 
-        System.out.println("\nconjunto usuarios");
-        mostrarFuncao(tipo);
+    private static void testarConfiguracao(TabelaLivros livros, TabelaUsuarios usuarios,
+                                           int conjunto, int tipo) {
+        int quantidade;
+        int capacidade;
 
-        for (int indice = 0; indice< usuarios.obterCapacidade(); indice ++){
+        if (conjunto == 1) {
+            quantidade = usuarios.obterQuantidadeUsuarios();
+            capacidade = usuarios.obterCapacidade();
+            System.out.println("\nConjunto: USUARIOS");
+        } else {
+            quantidade = livros.obterQuantidadeLivros();
+            capacidade = livros.obterCapacidade();
+            System.out.println("\nConjunto: TITULOS");
+        }
 
-            NoLista atual = usuarios.obterInicioLista(indice);
+        if (tipo == 1) System.out.println("Funcao: FNV1a");
+        else if (tipo == 2) System.out.println("Funcao: Polinomial 31");
+        else System.out.println("Funcao: djb2");
 
-            while(atual != null){
-                teste.inserir(atual.chave, atual.tamanho);
-                atual = atual.proximo;
+        double totalInsercao = 0;
+        double totalBusca = 0;
+        double mediaSucesso = 0;
+        double mediaFalha = 0;
+        int colisoes = 0;
+        int piorCaso = 0;
+
+        // Cada configuracao e repetida tres vezes com uma tabela vazia.
+        for (int repeticao = 1; repeticao <= 3; repeticao++) {
+            TabelaHash teste = new TabelaHash(tipo);
+
+            double inicio = System.nanoTime();
+            for (int i = 0; i < capacidade; i++) {
+                NoLista atual = obterInicio(conjunto, i, livros, usuarios);
+                while (atual != null) {
+                    teste.inserir(atual.chave, atual.tamanho);
+                    atual = atual.proximo;
+                }
             }
-        }
-        System.out.println("chaves originais" + usuarios.obterQuantidadeUsuarios());
-        System.out.println("chaves inseridas" + teste.obterQuantidadeChaves());
-        System.out.println("colisoes" + teste.obterColisoes());
+            double tempoInsercao = (System.nanoTime() - inicio) / 1000000.0;
+            totalInsercao += tempoInsercao;
 
-        if(teste.obterQuantidadeChaves() == usuarios.obterQuantidadeUsuarios()){
-            System.out.println("confere");
-        } else{
-            System.out.println("erro");
-        }
-    }
-    private static void testarLivros(TabelaLivros livros, int tipo){
-        TabelaHash teste = new TabelaHash(tipo);
-
-        System.out.println("\n conjunto livros");
-        mostrarFuncao(tipo);
-
-        for (int indice = 0; indice < livros.obterCapacidade(); indice++){
-            NoLista atual = livros.obterInicioLista(indice);
-
-            while (atual != null){
-                teste.inserir(atual.chave, atual.tamanho);
-                atual = atual.proximo;
-
+            double sondagensSucesso = 0;
+            inicio = System.nanoTime();
+            for (int i = 0; i < capacidade; i++) {
+                NoLista atual = obterInicio(conjunto, i, livros, usuarios);
+                while (atual != null) {
+                    teste.buscar(atual.chave, atual.tamanho);
+                    sondagensSucesso += teste.obterUltimaSondagem();
+                    atual = atual.proximo;
+                }
             }
-        }
-        System.out.println("chaves oroginais" + livros.obterQuantidadeLivros());
-        System.out.println("chaves inseridas" + teste.obterQuantidadeChaves());
-        System.out.println("colisoes "+ teste.obterColisoes());
+            double tempoBusca = (System.nanoTime() - inicio) / 1000000.0;
+            totalBusca += tempoBusca;
 
-        if(teste.obterQuantidadeChaves()== livros.obterQuantidadeLivros()){
-            System.out.println("ok");
-        }else{
-            System.out.println("erro");
+            // As contagens sao iguais nas tres repeticoes.
+            if (repeticao == 1) {
+                double sondagensFalha = 0;
+                for (int i = 0; i < capacidade; i++) {
+                    NoLista atual = obterInicio(conjunto, i, livros, usuarios);
+                    while (atual != null) {
+                        char[] inexistente = new char[atual.tamanho + 1];
+                        for (int j = 0; j < atual.tamanho; j++) {
+                            inexistente[j] = atual.chave[j];
+                        }
+                        inexistente[atual.tamanho] = (char) 1;
+
+                        teste.buscar(inexistente, atual.tamanho + 1);
+                        sondagensFalha += teste.obterUltimaSondagem();
+                        atual = atual.proximo;
+                    }
+                }
+
+                colisoes = teste.obterColisoes();
+                piorCaso = teste.obterPiorCaso();
+                if (quantidade > 0) {
+                    mediaSucesso = sondagensSucesso / quantidade;
+                    mediaFalha = sondagensFalha / quantidade;
+                }
+            }
+
+            System.out.println("Repeticao " + repeticao +
+                    " | insercao: " + tempoInsercao + " ms" +
+                    " | busca: " + tempoBusca + " ms");
         }
+
+        System.out.println("Quantidade de chaves: " + quantidade);
+        System.out.println("Colisoes: " + colisoes);
+        System.out.println("Media sondagens sucesso: " + mediaSucesso);
+        System.out.println("Media sondagens falha: " + mediaFalha);
+        System.out.println("Pior caso: " + piorCaso);
+        System.out.println("Tempo medio insercao (ms): " + totalInsercao / 3);
+        System.out.println("Tempo medio busca (ms): " + totalBusca / 3);
     }
-    public static void executar(TabelaLivros livros, TabelaUsuarios usuarios){
-        System.out.println("teste");
-        for(int tipo =1 ; tipo <= 3; tipo++){
-            testarUsuarios(usuarios, tipo);
-        }
-        for(int tipo = 1; tipo <=3; tipo++){
-            testarLivros(livros, tipo);
+
+    public static void executar(TabelaLivros livros, TabelaUsuarios usuarios) {
+        System.out.println("\n=== EXPERIMENTOS HASH ===");
+        for (int conjunto = 1; conjunto <= 2; conjunto++) {
+            for (int tipo = 1; tipo <= 3; tipo++) {
+                testarConfiguracao(livros, usuarios, conjunto, tipo);
+            }
         }
     }
 }

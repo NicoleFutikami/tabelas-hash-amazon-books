@@ -1,123 +1,104 @@
-public class TabelaHash {
-
+public class TabelaHash{
     private NoLista[] listas = new NoLista[1000003];
-
     private int tipoFuncao;
-    private int quantidadeChaves = 0;
-    private int colisoes = 0;
+    private int quantidadeChaves;
+    private int colisoes;
+    private int ultimaSondagem;
+    private int piorCaso;
 
-    public TabelaHash(int funcaoEscolhida){
-        tipoFuncao = funcaoEscolhida;
+    public TabelaHash(int tipo){
+        tipoFuncao = tipo;
     }
+    private int calcularIndice(char[] chave, int tamanho){
+        int h;
 
-    private int calcularIndice(char[] chave, int tamanho) {
-        int valorHash;
-
-        if (tipoFuncao == 1) {
-            valorHash = FuncoesHash.hashFnv1a(chave, tamanho);
-        } else if (tipoFuncao == 2) {
-            valorHash = FuncoesHash.hashPolinomial31(chave, tamanho);
-        } else {
-            valorHash = FuncoesHash.hashDjb2(chave, tamanho);
+        if(tipoFuncao == 1){
+            h = FuncoesHash.hashFnv1a(chave, tamanho);
+        }else if( tipoFuncao ==2 ){
+            h = FuncoesHash.hashPolinomial31(chave, tamanho);
+        }else{
+            h = FuncoesHash.hashDjb2(chave, tamanho);
         }
-        return FuncoesHash.calcularPosicao(valorHash);
+        return FuncoesHash.calcularPosicao(h);
     }
-    private int chavesIguais(char[] primeira, int tamanhoPrimeira,char[] segunda, int tamanhoSegunda) {
-        if (tamanhoPrimeira != tamanhoSegunda) {
+    private int chavesIguais(char[] primeira, int tamanhoPrimeira, char[] segunda, int tamanhoSegunda){
+        if(tamanhoPrimeira != tamanhoSegunda){
             return 0;
         }
-        for (int indice = 0; indice < tamanhoPrimeira; indice++) {
-            if (primeira[indice] != segunda[indice]) {
+        for(int i = 0; i < tamanhoPrimeira; i++){
+            if(primeira[i] != segunda[i]){
                 return 0;
             }
         }
         return 1;
     }
-    public int inserir(char[] chave, int tamanho){
+    public NoLista encontrarNo(char[] chave, int tamanho){
         int indice = calcularIndice(chave, tamanho);
-
         NoLista atual = listas[indice];
+        ultimaSondagem = 0;
 
         while(atual != null){
-            if(chavesIguais(atual.chave, atual.tamanho, chave, tamanho) ==1 ){
-                return 0;
+            ultimaSondagem++;
+            if(chavesIguais(atual.chave, atual.tamanho, chave,tamanho)== 1){
+                break;
             }
             atual = atual.proximo;
         }
-        if(listas[indice] != null){
+        if (ultimaSondagem > piorCaso){
+            piorCaso = ultimaSondagem;
+        }
+        return atual;
+    }
+    private NoLista adicionarNovo(char[] chave, int tamanho){
+        int indice = calcularIndice(chave, tamanho);
+
+        if (listas[indice] != null){
             colisoes++;
         }
-        NoLista novoNo = new NoLista(chave, tamanho);
-
-        novoNo.proximo = listas[indice];
-        listas[indice] = novoNo;
-
-        quantidadeChaves ++;
-
+        NoLista novo = new NoLista(chave, tamanho);
+        novo.proximo = listas[indice];
+        listas[indice] = novo;
+        quantidadeChaves++;
+        return novo;
+    }
+    public int inserir(char[] chave, int tamanho){
+        if(encontrarNo(chave, tamanho) != null){
+            return 0;
+        }
+        adicionarNovo(chave, tamanho);
         return 1;
     }
     public int buscar(char[] chave, int tamanho){
-        int indice = calcularIndice(chave, tamanho);
-        NoLista atual = listas[indice];
-
-        while (atual != null){
-            if(chavesIguais(atual.chave, atual.tamanho, chave, tamanho) ==1 ){
-                return 1;
-            }
-            atual = atual.proximo;
+        if(encontrarNo(chave, tamanho) != null){
+            return 1;
         }
         return 0;
     }
-    public int obterQuantidadeChaves() {
+    public void registrarNotaLivro(char[] titulo, int tamanho, double nota){
+        NoLista livro = encontrarNo(titulo, tamanho);
+
+        if (livro == null){
+            livro = adicionarNovo(titulo , tamanho);
+        }
+        livro.somaNotas = livro.somaNotas + nota;
+        livro.quantidadeAvaliacoes++;
+    }
+    public int obterUltimaSondagem(){
+        return ultimaSondagem;
+    }
+    public int obterPiorCaso(){
+        return piorCaso;
+    }
+    public int obterQuantidadeChaves(){
         return quantidadeChaves;
     }
     public int obterColisoes(){
         return colisoes;
     }
-
-    public NoLista encontrarNo(char [] chave, int tamanho){
-        int indice = calcularIndice(chave, tamanho);
-        NoLista atual = listas[indice];
-
-        while(atual != null){
-            if(chavesIguais(atual.chave, atual.tamanho, chave, tamanho) == 1){
-                return atual;
-            }
-            atual = atual.proximo;
-        }
-        return null;
+    public int obterCapacidade(){
+        return 1000003;
     }
-    public void registrarNotaLivro(char[] titulo, int tamanho, double nota){
-        int indice = calcularIndice(titulo, tamanho);
-        NoLista atual = listas[indice];
-
-        while(atual != null ){
-            if(chavesIguais(atual.chave, atual.tamanho,titulo, tamanho) == 1){
-
-                atual.somaNotas = atual.somaNotas + nota;
-                atual.quantidadeAvaliacoes ++;
-
-                return;
-            }
-            atual = atual.proximo;
-        }
-        if (listas[indice] != null){
-            colisoes++;
-        }
-        NoLista novo = new NoLista(titulo, tamanho);
-
-        novo.somaNotas = nota;
-        novo.quantidadeAvaliacoes = 1;
-
-        novo.proximo = listas[indice];
-        listas[indice] = novo;
-
-        quantidadeChaves++;
-
-    }
-    public int obterCapacidade(){ return 1000003;}
     public NoLista obterInicioLista(int indice){
         return listas[indice];
     }
-
 }

@@ -2,57 +2,52 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class ConsultaUsuarios {
-    private static void consultarLinha (char [] identificador, int tamanho, TabelaUsuarios usuarios){
-        System.out.print("consultando user id");
 
-        for(int indice = 0; indice < tamanho; indice++){
-            System.out.print(identificador[indice]);
+    private static void consultarLinha(char[] id, int tamanho, TabelaUsuarios usuarios) {
+        System.out.print("Consultando User_id: ");
+        for (int i = 0; i < tamanho; i++) {
+            System.out.print(id[i]);
         }
         System.out.println();
-
-        usuarios.mostrarUsuario(identificador, tamanho);
+        usuarios.mostrarUsuario(id, tamanho);
         System.out.println();
     }
 
-    public static int consultarArquivo(String caminho, TabelaUsuarios usuarios) throws IOException{
+    public static int consultarArquivo(String caminho, TabelaUsuarios usuarios) throws IOException {
         FileReader leitor = new FileReader(caminho);
-
-        char[] identificador = new char[64];
+        char[] id = new char[64];
         int capacidade = 64;
         int tamanho = 0;
-        int totalConsultas = 0;
+        int consultas = 0;
         int codigo = leitor.read();
 
-        while(codigo != 1){
-            char caractere = (char) codigo;
-
-            if(caractere == '\n'){
-                if(tamanho> 0){
-                    consultarLinha(identificador, tamanho, usuarios);
-                    totalConsultas++;
+        while (codigo != -1) {
+            if (codigo == '\n') {
+                if (tamanho > 0) {
+                    consultarLinha(id, tamanho, usuarios);
+                    consultas++;
                 }
                 tamanho = 0;
-            }else if(caractere != '\r'){
-                if(tamanho == capacidade){
-                    int novaCapacidade = capacidade * 2;
-                    char[] novoVetor = new char[novaCapacidade];
-
-                    for(int indice = 0; indice < tamanho; indice++){
-                        novoVetor[indice] = identificador[indice];
+            } else if (codigo != '\r') {
+                if (tamanho == capacidade) {
+                    capacidade = capacidade * 2;
+                    char[] novo = new char[capacidade];
+                    for (int i = 0; i < tamanho; i++) {
+                        novo[i] = id[i];
                     }
-                    identificador = novoVetor;
-                    capacidade = novaCapacidade;
+                    id = novo;
                 }
-                identificador[tamanho] = caractere;
+                id[tamanho] = (char) codigo;
                 tamanho++;
             }
             codigo = leitor.read();
         }
-        if(tamanho>0) {
-            consultarLinha(identificador,tamanho,usuarios);
-            totalConsultas++;
+
+        if (tamanho > 0) {
+            consultarLinha(id, tamanho, usuarios);
+            consultas++;
         }
         leitor.close();
-        return totalConsultas;
+        return consultas;
     }
 }

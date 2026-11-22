@@ -1,119 +1,81 @@
+
 public class RankingLivros {
-    private NoRanking primeiro = null;
-    private int quantidade = 0;
-    private int livroVemAntes(NoLista candidato, NoLista outro) {
 
-        double produtoCandidato = candidato.somaNotas * outro.quantidadeAvaliacoes;
+    private NoLista[] melhores = new NoLista[10];
+    private int quantidade;
 
-        double produtoOutro =outro.somaNotas * candidato.quantidadeAvaliacoes;
+    private int livroVemAntes(NoLista a, NoLista b) {
+        double valorA = a.somaNotas * b.quantidadeAvaliacoes;
+        double valorB = b.somaNotas * a.quantidadeAvaliacoes;
 
+        if (valorA > valorB) return 1;
+        if (valorA < valorB) return 0;
 
-        if (produtoCandidato > produtoOutro) {
-            return 1;
-        }
-        if (produtoCandidato < produtoOutro) {
-            return 0;
-        }
-        if (candidato.quantidadeAvaliacoes >
-                outro.quantidadeAvaliacoes) {
-            return 1;
-        }
-        if (candidato.quantidadeAvaliacoes <
-                outro.quantidadeAvaliacoes) {
-            return 0;
-        }
-        int indice = 0;
+        if (a.quantidadeAvaliacoes > b.quantidadeAvaliacoes) return 1;
+        if (a.quantidadeAvaliacoes < b.quantidadeAvaliacoes) return 0;
 
-        while (indice < candidato.tamanho &&
-                indice < outro.tamanho) {
-            if (candidato.chave[indice] < outro.chave[indice]) {
-                return 1;
-            }
-            if (candidato.chave[indice] > outro.chave[indice]) {
-                return 0;
-            }
-            indice++;
+        int i = 0;
+        while (i < a.tamanho && i < b.tamanho) {
+            if (a.chave[i] < b.chave[i]) return 1;
+            if (a.chave[i] > b.chave[i]) return 0;
+            i++;
         }
-        if (candidato.tamanho < outro.tamanho) {
-            return 1;
-        }
+        if (a.tamanho < b.tamanho) return 1;
         return 0;
     }
+
     private void considerarLivro(NoLista livro) {
-        if (livro.quantidadeAvaliacoes < 100) {
-            return;
-        }
-        NoRanking anterior = null;
-        NoRanking atual = primeiro;
+        if (livro.quantidadeAvaliacoes < 100) return;
+
         int posicao = 0;
-        while (atual != null &&
-                livroVemAntes(livro, atual.livro) == 0) {
-            anterior = atual;
-            atual = atual.proximo;
+        while (posicao < quantidade &&
+                livroVemAntes(livro, melhores[posicao]) == 0) {
             posicao++;
         }
-        if (posicao >= 10) {
-            return;
-        }
-        NoRanking novo = new NoRanking(livro);
-        novo.proximo = atual;
-        if (anterior == null) {
-            primeiro = novo;
-        } else {
-            anterior.proximo = novo;
-        }
-        if (quantidade < 10) {
-            quantidade++;
-        } else {
-            NoRanking ultimo = primeiro;
-            int contador = 1;
 
-            while (contador < 10) {
-                ultimo = ultimo.proximo;
-                contador++;
-            }
+        if (posicao == 10) return;
 
-            ultimo.proximo = null;
+        int ultimo = quantidade;
+        if (ultimo == 10) ultimo = 9;
+
+        for (int i = ultimo; i > posicao; i--) {
+            melhores[i] = melhores[i - 1];
         }
+        melhores[posicao] = livro;
+        if (quantidade < 10) quantidade++;
     }
+
     public void gerarRanking(TabelaLivros livros) {
-        primeiro = null;
         quantidade = 0;
+        for (int i = 0; i < 10; i++) {
+            melhores[i] = null;
+        }
 
-        for (int indice = 0;
-             indice < livros.obterCapacidade(); indice++) {
-
-            NoLista livro = livros.obterInicioLista(indice);
-
+        for (int i = 0; i < livros.obterCapacidade(); i++) {
+            NoLista livro = livros.obterInicioLista(i);
             while (livro != null) {
                 considerarLivro(livro);
                 livro = livro.proximo;
             }
         }
     }
-    public void mostrarRanking() {
 
-        System.out.println(
-                "top 10 livros min 100 avl"
-        );
-        if (primeiro == null) {
-            System.out.println(
-                    "Nenhum livro possui 100 avaliacoes"
-            );
+    public void mostrarRanking() {
+        System.out.println("=== TOP 10 LIVROS (MINIMO 100 AVALIACOES) ===");
+        if (quantidade == 0) {
+            System.out.println("Nenhum livro possui 100 avaliacoes.");
             return;
         }
-        NoRanking atual = primeiro;
-        int posicao = 1;
-        while (atual != null) {
-            NoLista livro = atual.livro;
-            System.out.print(posicao + ". ");
-            for (int indice = 0; indice < livro.tamanho; indice++) {
-                System.out.print(livro.chave[indice]);
+
+        for (int i = 0; i < quantidade; i++) {
+            NoLista livro = melhores[i];
+            System.out.print((i + 1) + ". ");
+            for (int j = 0; j < livro.tamanho; j++) {
+                System.out.print(livro.chave[j]);
             }
-            System.out.println("Media" +(livro.somaNotas / livro.quantidadeAvaliacoes) +"n " + livro.quantidadeAvaliacoes
-            );
-            atual = atual.proximo;
-            posicao++;
+            System.out.println(" | Media: " +
+                    (livro.somaNotas / livro.quantidadeAvaliacoes) +
+                    " | N: " + livro.quantidadeAvaliacoes);
         }
     }
 }

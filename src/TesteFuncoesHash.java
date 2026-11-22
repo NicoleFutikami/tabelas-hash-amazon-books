@@ -1,32 +1,18 @@
 public class TesteFuncoesHash {
 
-    public static void main(String[] args){
-        char[] chave = {'A', 'n', 'a'};
-        int tamanho = 3;
+    public static void main(String[] argumentos) {
+        char[] ana = {'A', 'n', 'a'};
+        int fnv = FuncoesHash.hashFnv1a(ana, 3);
 
-        int fnv1a = FuncoesHash.hashFnv1a(chave, tamanho);
-        int polinomial = FuncoesHash.hashPolinomial31(chave, tamanho);
-        int djb2 = FuncoesHash.hashDjb2(chave, tamanho);
+        System.out.println("FNV1a (Ana): " + fnv);
+        System.out.println("Polinomial 31 (Ana): " + FuncoesHash.hashPolinomial31(ana, 3));
+        System.out.println("djb2 (Ana): " + FuncoesHash.hashDjb2(ana, 3));
+        System.out.println("Posicao FNV1a: " + FuncoesHash.calcularPosicao(fnv));
 
-        System.out.println("chave  eh ana");
-        System.out.println(fnv1a);
-        System.out.println(polinomial);
-        System.out.println(djb2);
-
-        System.out.println(FuncoesHash.calcularPosicao(fnv1a));
-        System.out.println(FuncoesHash.calcularPosicao(polinomial));
-        System.out.println(FuncoesHash.calcularPosicao(djb2));
-
-        char[] primeiraChave ={'A', 'a'};
-        char[] segundaChave = {'B','b'};
-
-        System.out.println("pol de a" + FuncoesHash.hashPolinomial31(primeiraChave ,2));
-        System.out.println("pol de b " + FuncoesHash.hashPolinomial31(segundaChave , 2));
-
-        char [] chaveLonga = {'A', '1', 'R', 'R', '1', 'W', '4',
-                'Z', 'Y', 'R', 'A', 'X', 'C', 'N'};
-
-        int hashLongo = FuncoesHash.hashPolinomial31(chaveLonga, 14);
-        System.out.println(FuncoesHash.calcularPosicao(hashLongo));
+        char[] aa = {'A', 'a'};
+        char[] bb = {'B', 'B'};
+        System.out.println("Polinomial 31 (Aa): " + FuncoesHash.hashPolinomial31(aa, 2));
+        System.out.println("Polinomial 31 (BB): " + FuncoesHash.hashPolinomial31(bb, 2));
     }
 }
+

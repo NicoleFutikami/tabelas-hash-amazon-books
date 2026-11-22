@@ -5,7 +5,5 @@ public class NoAvaliacao {
 
     public NoAvaliacao(NoLista livroRecebido, double notaRecebida){
         livro = livroRecebido;
-        maiorNota = notaRecebida;
-        proximo = null;
-    }
+        maiorNota = notaRecebida;}
 }

@@ -9,9 +9,6 @@ public class NoLista {
     char[] nomePerfil;
     int tamanhoPerfil;
 
-    char[]melhorLivro;
-    int tamanhoMelhorLivro;
-
     NoAvaliacao primeiraAvaliacao;
     NoAvaliacao melhorAvaliacao;
 
@@ -19,25 +16,7 @@ public class NoLista {
         tamanho = tamanhoRecebido;
         chave = new char[tamanho];
 
-        for(int indice = 0; indice < tamanho; indice ++){
-            chave[indice] = chaveRecebida[indice];}
-
-        proximo = null;
-
-
-        somaNotas = 0.0;
-        quantidadeAvaliacoes = 0;
-
-        nomePerfil = null;
-        tamanhoPerfil = 0;
-
-        melhorLivro = null;
-        tamanhoMelhorLivro = 0;
-
-        primeiraAvaliacao = null;
-        melhorAvaliacao = null;
+        for (int i = 0; i < tamanho; i ++){
+            chave[i] = chaveRecebida[i];}
     }
-
-
-
 }

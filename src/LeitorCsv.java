@@ -1,265 +1,185 @@
-
-import java.io.*;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class LeitorCsv {
-
-    private static char[][] campos={ //campos eh o nome da variavel
-            new char[64], //titulo do livro
-            new char[64], //pessoa
-            new char[64], //perfil
-            new char[64]    //nota
+    private static char[][] campos = {
+            new char[64], new char[64], new char[64], new char[64]
     };
-    private static int[] tamanhos = new int[4];//vetor com os 4 campos ali de cima
-    private static int[] capacidades = {64, 64, 64, 64};// guarda num de caract que cabe
+    private static int[] tamanhos = {0, 0, 0, 0};
+    private static int[] capacidades = {64, 64, 64, 64};
 
-    private static int totalAvaliacoes = 0; //conta num de avaliacoes ue
-    private static int colunasIncorretas = 0; // registross com qntd diferentes q 10 colunas
-    private static int cabecalhoPendente =1;//primeira linha co csv eh ignorada
+    private static int totalAvaliacoes;
+    private static int avaliacoesValidas;
+    private static int semUsuario;
+    private static int semTitulo;
+    private static int notaInvalida;
+    private static int colunasIncorretas;
+    private static int cabecalhoPendente;
 
-    private static int avaliacoesValidas =0;
-    private static int semUsuario = 0;
-    private static int semTitulo = 0;
-    private static int notaInvalida = 0;
-
-    private static int campoNecessario(int coluna){ //tem 10 colunas mas andrey pediu so 4
-        if(coluna == 1) return 0; //titulo
-        if(coluna == 3) return 1; //usuario
-        if(coluna == 4) return 2; //perfil
-        if(coluna == 6) return 3; //nota
-        return -1; //coluna NAO EH uma das 4 (eh uma das outras 6)
+    private static int campoNecessario(int coluna) {
+        if (coluna == 1) return 0;
+        if (coluna == 3) return 1;
+        if (coluna == 4) return 2;
+        if (coluna == 6) return 3;
+        return -1;
     }
-    private static void guardarCaractere(int coluna, char caractere){ //guarda carac lido no csv
+
+    private static void guardarCaractere(int coluna, char caractere) {
         int destino = campoNecessario(coluna);
-        if(destino == -1) return; //se a coluna nao for uma das quatro, ignora
+        if (destino == -1) return;
 
-        if (tamanhos[destino] == capacidades[destino]){ //ve se ta dentro do numero de carac
-            int novaCapacidade = capacidades[destino] * 2; // dpbra capacidade se tiver maior
-            char [] novoVetor = new char[novaCapacidade];
-
-            for( int indice =0; indice < tamanhos[destino]; indice++){ //percorre pra atualizar
-                novoVetor[indice] = campos[destino][indice];
+        if (tamanhos[destino] == capacidades[destino]) {
+            capacidades[destino] = capacidades[destino] * 2;
+            char[] novo = new char[capacidades[destino]];
+            for (int i = 0; i < tamanhos[destino]; i++) {
+                novo[i] = campos[destino][i];
             }
-            campos[destino] = novoVetor;
-            capacidades[destino] = novaCapacidade; //atualiza em si
+            campos[destino] = novo;
         }
-        campos[destino][tamanhos[destino]] = caractere; //guarda caractere na proxima posicao livre do vetor
-        tamanhos[destino]++; //aumenta 1 pro vetor nao comer caractere
-    }
-    private static void mostrarCampo(int indiceCampo){ //indica qual campo vamos mostrar
-        for(int indice = 0; indice < tamanhos[indiceCampo]; indice++){ //percorre os armazenados
-            System.out.print(campos[indiceCampo][indice]); //imprime o campo e o indice, posicao
-        }
+        campos[destino][tamanhos[destino]] = caractere;
+        tamanhos[destino]++;
     }
 
-    private static int campoVazio(int indiceCampo){ //METODO PRA VER SE TEM CAMPO VAZIO
-        for (int indice = 0; indice <tamanhos[indiceCampo]; indice ++){
-            char caractere = campos[indiceCampo][indice];
-            if (caractere != ' ' && caractere != '\t' && caractere != '\n' && caractere != '\r'){
+    private static int campoVazio(int indice) {
+        for (int i = 0; i < tamanhos[indice]; i++) {
+            char c = campos[indice][i];
+            if (c != ' ' && c != '\t' && c != '\n' && c != '\r') {
                 return 0;
             }
         }
         return 1;
     }
-    private static double converterNota(char[] caracteres, int tamanho){
-        if(tamanho == 0) return -1;
 
-        int parteInteira = 0;
-        double nota = 0.0;
-        double divisor = 10.0;
-        int temPonto = 0;
+    private static double converterNota() {
+        if (tamanhos[3] == 0) return -1;
 
-        for(int i = 0; i < tamanho; i++){
-            char c = caracteres[i];
+        double nota = 0;
+        double decimal = 0.1;
+        int ponto = 0;
 
-            if (c == '.'){
-                if(temPonto == 1 || i == 0 || i == tamanho -1) return -1.0;
-                temPonto =1;
-            } else if (c >= '0' && c <= '9'){
-                int digito = c -'0';
-
-                if(temPonto == 0){
-                    parteInteira = parteInteira * 10 + digito;
-                    nota = parteInteira;
-                }else{
-                    if(parteInteira == 5 && digito !=0) return -1.0;
-
-                    nota = nota + digito / divisor;
-                    divisor = divisor * 10;
+        for (int i = 0; i < tamanhos[3]; i++) {
+            char c = campos[3][i];
+            if (c == '.') {
+                if (ponto == 1 || i == 0 || i == tamanhos[3] - 1) return -1;
+                ponto = 1;
+            } else if (c >= '0' && c <= '9') {
+                int digito = c - '0';
+                if (ponto == 0) {
+                    nota = nota * 10 + digito;
+                } else {
+                    nota = nota + digito * decimal;
+                    decimal = decimal / 10;
                 }
-                if (parteInteira > 5 ) return -1.0;
-            } else{
-                return -1.0;
+                if (nota > 5) return -1;
+            } else {
+                return -1;
             }
         }
-        if (parteInteira < 1) return -1.0;
+        if (nota < 1 || nota > 5) return -1;
         return nota;
     }
-    private static void terminarRegistro(int numeroColunas, TabelaLivros tabelaLivros, TabelaUsuarios tabelaUsuarios){ //final do registro csv
-        if (cabecalhoPendente == 1){
-            cabecalhoPendente = 0; // nn precisa ignorar novamente
-        }else{
-            totalAvaliacoes++; //terminou de ler cabecalho e vamos fazer os ifs
 
-            if (numeroColunas != 10){ //se colunas incorretas forem diferentes de 10, aumenta a contagem de colunas incorretas
+    private static void terminarRegistro(int colunas, TabelaLivros livros,TabelaUsuarios usuarios) {
+        if (cabecalhoPendente == 1) {
+            cabecalhoPendente = 0;
+        } else {
+            totalAvaliacoes++;
+            if (colunas != 10) {
                 colunasIncorretas++;
-            }else if(campoVazio(1) == 1){
-                semUsuario ++;
-            }else if(campoVazio(0) == 1){
+            } else if (campoVazio(1) == 1) {
+                semUsuario++;
+            } else if (campoVazio(0) == 1) {
                 semTitulo++;
             } else {
-                double nota = converterNota(campos[3], tamanhos[3]);
-
-                if (nota < 1.0) {
+                double nota = converterNota();
+                if (nota < 1) {
                     notaInvalida++;
                 } else {
                     avaliacoesValidas++;
-
-                    tabelaLivros.adicionarAvaliacao(campos[0], tamanhos[0], nota);
-
-                    if (tabelaUsuarios != null){
-                        tabelaUsuarios.adicionarUsuario(campos [1], tamanhos[1], campos [2], tamanhos[2]);
-
-                        NoLista livro = tabelaLivros.encontrarLivro(campos[0], tamanhos[0]);
-
-                        tabelaUsuarios.registrarLivroAvaliado(campos[1], tamanhos[1], livro , nota);
-                    }
+                    livros.adicionarAvaliacao(campos[0], tamanhos[0], nota);
+                    usuarios.adicionarUsuario(campos[1], tamanhos[1],
+                            campos[2], tamanhos[2]);
+                    NoLista livro = livros.encontrarLivro(campos[0], tamanhos[0]);
+                    usuarios.registrarLivroAvaliado(campos[1], tamanhos[1], livro, nota);
                 }
             }
-
-            if (totalAvaliacoes <= 2){ //TESTANDO
-                System.out.print("avaliacao ");
-                System.out.println(totalAvaliacoes);
-
-                System.out.print("titulo: ");
-                mostrarCampo(0);
-                System.out.println();
-
-                System.out.print("usuario: ");
-                mostrarCampo(1);
-                System.out.println();
-
-                System.out.print("perfil: ");
-                mostrarCampo(2);
-                System.out.println();
-
-                System.out.print("nota: ");
-                mostrarCampo(3);
-                System.out.println();
-            }
         }
-        for (int indice =0; indice<4; indice++){
-            tamanhos[indice] =0; //esvazia pra proximo registro
-        }
-    }
-
-
-    public static void lerArquivo(String caminho, TabelaLivros tabelaLivros) throws IOException {
-        lerArquivo(caminho, tabelaLivros, null);}
-
-    public static void lerArquivo(String caminho, TabelaLivros tabelaLivros, TabelaUsuarios tabelaUsuarios)throws IOException{
-        totalAvaliacoes = 0;
-        colunasIncorretas = 0;
-        cabecalhoPendente = 1;
-
-        avaliacoesValidas = 0;
-        semUsuario = 0;
-        semTitulo = 0;
-        notaInvalida = 0;
 
         for (int i = 0; i < 4; i++) {
             tamanhos[i] = 0;
         }
+    }
+
+    public static void lerArquivo(String caminho, TabelaLivros livros,
+                                  TabelaUsuarios usuarios) throws IOException {
+        totalAvaliacoes = 0;
+        avaliacoesValidas = 0;
+        semUsuario = 0;
+        semTitulo = 0;
+        notaInvalida = 0;
+        colunasIncorretas = 0;
+        cabecalhoPendente = 1;
+        for (int i = 0; i < 4; i++) tamanhos[i] = 0;
 
         int coluna = 0;
-        int dentroAspas = 0; // 1 quando esta dentro de aspas
+        int dentroAspas = 0;
         int aspasFechadas = 0;
         int inicioCampo = 1;
         int registroIniciado = 0;
-        int pularQuebraLinha = 0;
 
         FileReader leitor = new FileReader(caminho);
         int codigo = leitor.read();
 
         while (codigo != -1) {
-            char caractere = (char) codigo;
+            char c = (char) codigo;
 
-            if (pularQuebraLinha == 1 && caractere == '\n') {
-                pularQuebraLinha = 0;
-            } else {
-                pularQuebraLinha = 0;
-
-                if (dentroAspas == 1) {
-                    if (caractere == '"') {
-                        dentroAspas = 0;
-                        aspasFechadas = 1;
-                    } else {
-                        guardarCaractere(coluna, caractere);
-                    }
-
-                } else if (aspasFechadas == 1 && caractere == '"') {
-                    guardarCaractere(coluna, '"');
-                    dentroAspas = 1;
-                    aspasFechadas = 0;
-
-                } else if (caractere == ',') {
-                    coluna++;
-                    inicioCampo = 1;
-                    aspasFechadas = 0;
-                    registroIniciado = 1;
-
-                } else if (caractere == '\n' || caractere == '\r') {
-                    if (registroIniciado == 1) {
-                        terminarRegistro(coluna + 1, tabelaLivros, tabelaUsuarios);
-                    }
-
-                    coluna = 0;
-                    inicioCampo = 1;
-                    aspasFechadas = 0;
-                    registroIniciado = 0;
-
-                    if (caractere == '\r') {
-                        pularQuebraLinha = 1;
-                    }
-
-                } else if (caractere == '"' && inicioCampo == 1) {
-                    dentroAspas = 1;
-                    inicioCampo = 0;
-                    registroIniciado = 1;
-
+            if (dentroAspas == 1) {
+                if (c == '"') {
+                    dentroAspas = 0;
+                    aspasFechadas = 1;
                 } else {
-                    guardarCaractere(coluna, caractere);
-                    inicioCampo = 0;
-                    aspasFechadas = 0;
-                    registroIniciado = 1;
+                    guardarCaractere(coluna, c);
                 }
+            } else if (aspasFechadas == 1 && c == '"') {
+                guardarCaractere(coluna, '"');
+                dentroAspas = 1;
+                aspasFechadas = 0;
+            } else if (c == ',') {
+                coluna++;
+                inicioCampo = 1;
+                aspasFechadas = 0;
+                registroIniciado = 1;
+            } else if (c == '\n' || c == '\r') {
+                if (registroIniciado == 1) {
+                    terminarRegistro(coluna + 1, livros, usuarios);
+                }
+                coluna = 0;
+                inicioCampo = 1;
+                aspasFechadas = 0;
+                registroIniciado = 0;
+            } else if (c == '"' && inicioCampo == 1) {
+                dentroAspas = 1;
+                inicioCampo = 0;
+                registroIniciado = 1;
+            } else {
+                guardarCaractere(coluna, c);
+                inicioCampo = 0;
+                aspasFechadas = 0;
+                registroIniciado = 1;
             }
-
             codigo = leitor.read();
         }
-
         leitor.close();
-
         if (registroIniciado == 1) {
-            terminarRegistro(coluna + 1, tabelaLivros, tabelaUsuarios);
+            terminarRegistro(coluna + 1, livros, usuarios);
         }
 
-        System.out.print("Avaliacoes lidas: ");
-        System.out.println(totalAvaliacoes);
-
-        System.out.print("Registros com numero incorreto de colunas: ");
-        System.out.println(colunasIncorretas);
-
-        System.out.println("avalicoes validas: " + avaliacoesValidas);
-        System.out.println("sem usuario: " + semUsuario);
-        System.out.println("sem titulo " + semTitulo);
-        System.out.println("notas invalidas " + notaInvalida);
-        System.out.println("avaliacoes descartadas: "+ (totalAvaliacoes - avaliacoesValidas));
-
+        System.out.println("Avaliacoes lidas: " + totalAvaliacoes);
+        System.out.println("Registros com colunas incorretas: " + colunasIncorretas);
+        System.out.println("Avaliacoes validas: " + avaliacoesValidas);
+        System.out.println("Sem usuario: " + semUsuario);
+        System.out.println("Sem titulo: " + semTitulo);
+        System.out.println("Notas invalidas: " + notaInvalida);
+        System.out.println("Avaliacoes descartadas: " + (totalAvaliacoes - avaliacoesValidas));
     }
-
-// HABILITAR O CODIGO HARUMIIIIIIIIII oiii
-
 }
-
-
-

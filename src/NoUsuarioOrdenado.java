@@ -5,6 +5,6 @@ public class NoUsuarioOrdenado {
 
     public NoUsuarioOrdenado(NoLista usuarioRecebido) {
         usuario = usuarioRecebido;
-        proximo = null;
     }
 }
+
