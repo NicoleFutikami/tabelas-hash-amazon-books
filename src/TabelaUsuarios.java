@@ -42,12 +42,29 @@ public class TabelaUsuarios {
             System.out.print(usuario.chave[indice]);
         }
         System.out.println();
-        System.out.print("nome do perfil ");
 
+        System.out.print("nome do perfil ");
         for(int indice = 0; indice < usuario.tamanhoPerfil; indice++){
             System.out.print(usuario.nomePerfil[indice]);
         }
         System.out.println();
+
+        if(usuario.melhorAvaliacao == null){
+            System.out.println("melhor livro ainda n calculado ");
+        }else{
+            NoAvaliacao escolha = usuario.melhorAvaliacao;
+            NoLista livro = escolha.livro;
+
+            System.out.println("mlehor livro");
+            for(int indice = 0; indice < livro.tamanho; indice++){
+                System.out.print(livro.chave[indice]);
+            }
+            System.out.println();
+
+            System.out.println("media global" + (livro.somaNotas / livro.quantidadeAvaliacoes));
+            System.out.println("n do livro: " +livro.quantidadeAvaliacoes);
+            System.out.println("nota do usuario: " + escolha.maiorNota);
+        }
     }
     public void registrarLivroAvaliado(char[] identificador, int tamanhoIdentificador, NoLista livro, double nota){
         NoLista usuario = tabela.encontrarNo(identificador, tamanhoIdentificador);
