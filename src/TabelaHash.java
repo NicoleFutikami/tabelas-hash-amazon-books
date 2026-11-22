@@ -1,3 +1,7 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 public class TabelaHash {
 
     private NoLista[] listas = new NoLista[1000003];
