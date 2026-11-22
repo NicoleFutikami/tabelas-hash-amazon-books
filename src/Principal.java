@@ -16,6 +16,10 @@ public class Principal {
 
         int linhasGravadas = usuarios.gerarArquivoCsv("usuario_melhor_livro.csv");
 
+        int totalConsultas = ConsultaUsuarios.consultarArquivo("user_id.txt", usuarios);
+
+        System.out.println("consultas realizadas: "+ totalConsultas);
+
         System.out.println("usuarios gravados no csv" + linhasGravadas);
 
         System.out.println("titulos diferentes: "
