@@ -1,7 +1,3 @@
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-
 public class TabelaHash {
 
     private NoLista[] listas = new NoLista[1000003];
@@ -123,18 +119,5 @@ public class TabelaHash {
     public NoLista obterInicioLista(int indice){
         return listas[indice];
     }
-    private void escreverCampoCsv(PrintWriter arquivo, char[] texto, int tamanho){
-        arquivo.print('"');
-
-        if(texto != null){
-            for(int indice = 0; indice < tamanho; indice ++){
-                if(texto[indice] == '"'){
-                    arquivo.print('"');
-                }
-                arquivo.print(texto[indice]);
-            }
-        }
-        arquivo.print('"');
-
-    }
+    
 }
