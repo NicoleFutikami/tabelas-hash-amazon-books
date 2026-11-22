@@ -136,4 +136,26 @@ public class TabelaUsuarios {
         return tituloVemAntes(candidata.livro, melhor.livro);
     }
 
+    public void calcularMelhoresLivros(){
+        for(int indice = 0; indice < tabela.obterCapacidade(); indice++){
+            NoLista usuario = tabela.obterInicioLista(indice);
+
+
+            while (usuario != null){
+                NoAvaliacao atual = usuario.primeiraAvaliacao;
+                NoAvaliacao melhor = null;
+
+                while (atual != null){
+                    if(melhor == null || avaliacaoMelhor(atual, melhor) == 1){
+                        melhor = atual;
+                    }
+                    atual = atual.proximo;
+                }
+                usuario.melhorAvaliacao = melhor;
+
+                usuario = usuario.proximo;
+            }
+        }
+    }
+
 }
