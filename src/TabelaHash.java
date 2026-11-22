@@ -115,4 +115,8 @@ public class TabelaHash {
         quantidadeChaves++;
 
     }
+    public int obterCapacidade(){ return 1000003;}
+    public NoLista obterInicioLista(int indice){
+        return listas[indice];
+    }
 }
