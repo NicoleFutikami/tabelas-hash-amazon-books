@@ -28,4 +28,10 @@ public class TabelaLivros {
     public NoLista encontrarLivro(char[] titulo, int tamanho){
         return tabela.encontrarNo(titulo, tamanho);
     }
+    public int obterCapacidade(){
+        return tabela.obterCapacidade();
+    }
+    public NoLista obterInicioLista(int indice){
+        return tabela.obterInicioLista(indice);
+    }
 }
