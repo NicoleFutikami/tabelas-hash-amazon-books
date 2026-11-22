@@ -1,8 +1,4 @@
 import java.io.IOException;
-
-public class Principal
-import java.io.IOException;
-
 public class Principal {
 
     public static void main(String[] argumentos)
@@ -11,28 +7,25 @@ public class Principal {
         TabelaLivros livros = new TabelaLivros();
         TabelaUsuarios usuarios = new TabelaUsuarios();
 
-        // Le a base completa
+        
         LeitorCsv.lerArquivo(
                 "/Users/mimi/Desktop/JAVARA3/Books_rating.csv",
                 livros,
                 usuarios
         );
 
-        // JAVA-09: calcula os melhores livros
+
         usuarios.calcularMelhoresLivros();
 
-        // JAVA-12: gera o ranking top 10
+
         RankingLivros ranking = new RankingLivros();
 
         ranking.gerarRanking(livros);
         ranking.mostrarRanking();
-
-        // JAVA-10: gera o primeiro CSV
         int linhasGravadas = usuarios.gerarArquivoCsv(
                 "usuario_melhor_livro.csv"
         );
 
-        // JAVA-13: gera o CSV ordenado
         OrdenacaoUsuarios ordenacao = new OrdenacaoUsuarios();
 
         ordenacao.carregarUsuarios(usuarios);
@@ -56,7 +49,6 @@ public class Principal {
         System.out.println("Tempo de ordenacao (ms): "
                 + tempoOrdenacao);
 
-        // JAVA-11: consulta os usuarios
         int totalConsultas = ConsultaUsuarios.consultarArquivo(
                 "user_id.txt", usuarios
         );
@@ -73,7 +65,6 @@ public class Principal {
         System.out.println("Usuarios diferentes: "
                 + usuarios.obterQuantidadeUsuarios());
 
-        // JAVA-14: executa os seis experimentos hash
         ExperimentosHash.executar(livros, usuarios);
 
         System.out.println("Terminou o programa!");
