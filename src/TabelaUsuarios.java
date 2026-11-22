@@ -97,5 +97,23 @@ public class TabelaUsuarios {
             atual = atual.proximo;
         }
     }
+    private int tituloVemAntes(NoLista primeiro, NoLista segundo){
+        int indice = 0;
+
+        while(indice < primeiro.tamanho && indice< segundo.tamanho){
+
+            if(primeiro.chave[indice]< segundo.chave[indice]){
+                return 1;
+            }
+            if(primeiro.chave[indice] > segundo.chave[indice]){
+                return 0;
+            }
+            indice++;
+        }
+        if(primeiro.tamanho < segundo.tamanho){
+            return 1;
+        }
+        return 0;
+    }
 
 }
