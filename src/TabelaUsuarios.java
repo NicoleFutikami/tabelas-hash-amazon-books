@@ -115,5 +115,25 @@ public class TabelaUsuarios {
         }
         return 0;
     }
+    private int avaliacaoMelhor(NoAvaliacao candidata, NoAvaliacao melhor){
+
+        double produtoCandidata = candidata.livro.somaNotas * melhor.livro.quantidadeAvaliacoes;
+
+        double produtoMelhor = melhor.livro.somaNotas * candidata.livro.quantidadeAvaliacoes;
+
+        if(produtoCandidata > produtoMelhor){
+            return 1;
+        }
+        if(produtoCandidata < produtoMelhor){
+            return 0;
+        }
+        if(candidata.livro.quantidadeAvaliacoes> melhor.livro.quantidadeAvaliacoes){
+            return 1;
+        }
+        if(candidata.livro.quantidadeAvaliacoes < melhor.livro.quantidadeAvaliacoes){
+            return 0;
+        }
+        return tituloVemAntes(candidata.livro, melhor.livro);
+    }
 
 }
