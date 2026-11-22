@@ -1,4 +1,6 @@
 # Tabelas Hash — Amazon Books Reviews
+ps: usamos IA *APENAS* para organizar o README, pois ficou horrivel sem.
+Se necessário, mandaremos a versao original sem a organizacao.
 
 Trabalho prático de Estruturas de Dados (RA3), desenvolvido em Java. O programa lê avaliações de livros da Amazon e identifica, para cada usuário, o livro com a maior média global entre aqueles que ele avaliou.
 
