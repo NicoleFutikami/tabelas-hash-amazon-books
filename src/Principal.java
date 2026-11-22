@@ -14,6 +14,11 @@ public class Principal {
         );
         usuarios.calcularMelhoresLivros();
 
+        RankingLivros ranking = new RankingLivros();
+
+        ranking.gerarRanking(livros);
+        ranking.mostrarRanking();
+
         int linhasGravadas = usuarios.gerarArquivoCsv("usuario_melhor_livro.csv");
 
         int totalConsultas = ConsultaUsuarios.consultarArquivo("user_id.txt", usuarios);
