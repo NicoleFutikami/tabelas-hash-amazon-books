@@ -12,8 +12,9 @@ public class Principal {
                 "/Users/mimi/Desktop/JAVARA3/Books_rating.csv",
                 livros, usuarios
         );
+        usuarios.calcularMelhoresLivros();
 
-        System.out.println("itulos diferentes: "
+        System.out.println("titulos diferentes: "
                 + livros.obterQuantidadeLivros());
 
         System.out.println("usuarios dif" + usuarios.obterQuantidadeUsuarios());
