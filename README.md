@@ -70,8 +70,7 @@ Os tempos e as contagens de colisões e sondagens são exibidos na execução e 
 
 ## Repositório e apresentação
 
-- **Código no GitHub:** https://github.com/NicoleFutikami/tabelas-hash-amazon-books
-- **Vídeo de apresentação:** adicionar o link após a gravação.
-- **Relatório:** disponibilizar conforme a orientação de entrega do professor.
-
-> Observação: a base de dados completa e os arquivos CSV grandes devem ser entregues ou compartilhados conforme as instruções do professor; eles não são publicados diretamente neste repositório.
+- [Repositório Git](https://github.com/NicoleFutikami/tabelas-hash-amazon-books)
+- [Vídeo YT](https://youtu.be/rIEdC3tVMko)
+- [Drive CSV](https://drive.google.com/drive/folders/1-jGi8kx8AcwOvDptFRR-aU5ApBuCxLDR)
+- [Relatório](docs/Relatorio_RA3_Hash_Amazon_Books.pdf)
