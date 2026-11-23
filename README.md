@@ -70,7 +70,6 @@ Os tempos e as contagens de colisões e sondagens são exibidos na execução e 
 
 ## Repositório e apresentação
 
-- [Repositório Git](https://github.com/NicoleFutikami/tabelas-hash-amazon-books)
 - [Vídeo YT](https://youtu.be/rIEdC3tVMko)
 - [Drive CSV](https://drive.google.com/drive/folders/1-jGi8kx8AcwOvDptFRR-aU5ApBuCxLDR)
 - [Relatório](docs/Relatorio_RA3_Hash_Amazon_Books.pdf)
